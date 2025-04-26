@@ -250,17 +250,17 @@ def barcodes_file(input_name, slice_name):
             shlex.split(cmd)).split(b'\n'))
 
 
-def betti(saveable, homology=0, x=0, y=0):
+def betti(saveable, homology=0, x=0, y=0, threads=1):
     # print("betti")
     with TempDir() as dir:
         name = os.path.join(dir, 'rivet-input.txt')
         with open(name, 'wt') as betti_temp:
             saveable.save(betti_temp)
-        return betti_file(name, homology=homology, x=x, y=y)
+        return betti_file(name, homology=homology, x=x, y=y, threads=threads)
 
 
-def betti_file(name, homology=0, x=0, y=0):
-    cmd = "%s %s --betti -H %d -x %d -y %d" % (rivet_executable, name, homology, x, y)
+def betti_file(name, homology=0, x=0, y=0, threads=1):
+    cmd = "%s %s --betti -H %d -x %d -y %d --num_threads %d" % (rivet_executable, name, homology, x, y, threads)
     return _parse_betti(subprocess.check_output(shlex.split(cmd)).split(b'\n'))
 
 
